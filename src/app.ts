@@ -13,6 +13,7 @@ import profileConfigRoutes from './routes/profile-config.routes';
 import userProfileRoutes from './routes/user-profile.routes';
 import familyHistoryRoutes from './routes/family-history.routes';
 import familyHistoryConfigRoutes from './routes/family-history-config.routes';
+import controlHistoryRoutes from './routes/control-history.routes';
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -38,6 +39,7 @@ app.use('/api/profile-config', profileConfigRoutes);
 app.use('/api/profile', userProfileRoutes);
 app.use('/api/family-history', familyHistoryRoutes);
 app.use('/api/family-history/config', familyHistoryConfigRoutes);
+app.use('/api/control-history', controlHistoryRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {

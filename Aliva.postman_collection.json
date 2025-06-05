@@ -434,6 +434,269 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Historial de Controles",
+			"item": [
+				{
+					"name": "Crear Pregunta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"¿Cuándo fue tu último PAP?\",\n    \"description\": \"Fecha del último Papanicolaou\",\n    \"isRequired\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/config/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "config", "questions"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar Pregunta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"¿Cuándo fue tu último PAP?\",\n    \"description\": \"Fecha del último Papanicolaou\",\n    \"isRequired\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/config/questions/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "config", "questions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Eliminar Pregunta",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/config/questions/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "config", "questions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Obtener Todas las Preguntas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "questions"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Pregunta por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/questions/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "questions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Enviar Respuesta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2024-03-15T00:00:00.000Z\",\n    \"details\": \"Resultado normal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/questions/:questionId/answers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "questions", ":questionId", "answers"],
+							"variable": [
+								{
+									"key": "questionId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Actualizar Respuesta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2024-03-15T00:00:00.000Z\",\n    \"details\": \"Resultado normal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/answers/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "answers", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Obtener Todas las Respuestas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/answers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "answers"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Respuesta por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/answers/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "answers", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Eliminar Respuesta",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/answers/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "answers", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				}
+			]
 		}
 	],
 	"variable": [
