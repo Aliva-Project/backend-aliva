@@ -1,0 +1,5 @@
+CREATE DATABASE IF NOT EXISTS aliva_db;
+CREATE USER IF NOT EXISTS 'aliva_user'@'%' IDENTIFIED BY 'aliva_password';
+GRANT ALL PRIVILEGES ON aliva_db.* TO 'aliva_user'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'aliva_user'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES; 
