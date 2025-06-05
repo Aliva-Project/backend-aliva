@@ -58,6 +58,21 @@ npm run build
 npm start
 ```
 
+## Documentación de la API
+
+La documentación completa de la API está disponible a través de Swagger UI. Una vez que el servidor esté en ejecución, puedes acceder a la documentación en:
+
+```
+http://localhost:3000/api-docs
+```
+
+La documentación incluye:
+- Descripción detallada de todos los endpoints
+- Esquemas de request/response
+- Ejemplos de uso
+- Autenticación y autorización
+- Códigos de estado y mensajes de error
+
 ## API Endpoints
 
 ### Autenticación

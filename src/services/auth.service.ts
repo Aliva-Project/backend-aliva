@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const prisma = new PrismaClient();
 
 export class AuthService {
-  async register(email: string, password: string, name: string) {
+  async register(email: string, password: string, name: string, birthDate: Date, location: string) {
     const existingUser = await prisma.user.findUnique({
       where: { email }
     });
@@ -20,7 +20,9 @@ export class AuthService {
       data: {
         email,
         password: hashedPassword,
-        name
+        name,
+        birthDate,
+        location
       }
     });
 
@@ -76,7 +78,7 @@ export class AuthService {
 
   private generateToken(userId: string): string {
     return jwt.sign(
-      { id: userId },
+      { id: parseInt(userId) },
       process.env.JWT_SECRET || 'default_secret',
       { expiresIn: '1d' }
     );
