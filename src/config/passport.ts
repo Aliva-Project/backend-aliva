@@ -7,15 +7,20 @@ const prisma = new PrismaClient();
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET
+  secretOrKey: process.env.JWT_SECRET || 'default_secret'
 };
 
 export const configurePassport = (passport: any) => {
   passport.use(
     new JwtStrategy(options, async (jwt_payload: any, done: any) => {
       try {
+        const userId = parseInt(jwt_payload.id);
+        if (isNaN(userId)) {
+          return done(null, false);
+        }
+
         const user = await prisma.user.findUnique({
-          where: { id: jwt_payload.id }
+          where: { id: userId }
         });
 
         if (user) {

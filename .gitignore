@@ -1,0 +1,58 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by testing tools
+coverage/
+
+# Production build output
+dist/
+build/
+
+# Optional npm cache directory
+.npm/
+
+# dotenv environment variables file
+.env
+.env.*.local
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Test results
+test-results/
+
+# Expo-specific (if it's a hybrid project)
+.expo/
+.expo-shared/
+
+# TypeScript
+*.tsbuildinfo
+
+# Webpack and similar tools
+webpack-stats.json
+
+# Local server-only files
+*.local.js

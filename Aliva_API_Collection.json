@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "aliva-api-collection",
+		"name": "Aliva API",
+		"description": "Colección de endpoints para la API de Aliva",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"usuario@ejemplo.com\",\n    \"password\": \"123456\",\n    \"name\": \"Usuario Ejemplo\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						},
+						"description": "Registrar un nuevo usuario"
+					}
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"usuario@ejemplo.com\",\n    \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Iniciar sesión y obtener token JWT"
+					}
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/profile",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "profile"]
+						},
+						"description": "Obtener perfil del usuario autenticado"
+					}
+				}
+			]
+		},
+		{
+			"name": "Profile Configuration",
+			"item": [
+				{
+					"name": "Create Field Configuration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fieldName\": \"phone\",\n    \"displayName\": \"Teléfono\",\n    \"isRequired\": true,\n    \"fieldType\": \"PHONE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile-config",
+							"host": ["{{base_url}}"],
+							"path": ["api", "profile-config"]
+						},
+						"description": "Crear una nueva configuración de campo (solo admin)"
+					}
+				},
+				{
+					"name": "Update Field Configuration",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"displayName\": \"Número de Teléfono\",\n    \"isRequired\": false,\n    \"fieldType\": \"PHONE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile-config/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "profile-config", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Actualizar una configuración de campo (solo admin)"
+					}
+				},
+				{
+					"name": "Delete Field Configuration",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/profile-config/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "profile-config", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Eliminar una configuración de campo (solo admin)"
+					}
+				},
+				{
+					"name": "Get All Configurations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/profile-config",
+							"host": ["{{base_url}}"],
+							"path": ["api", "profile-config"]
+						},
+						"description": "Obtener todas las configuraciones de campos (solo admin)"
+					}
+				},
+				{
+					"name": "Get Configuration by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/profile-config/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "profile-config", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtener una configuración de campo específica (solo admin)"
+					}
+				}
+			]
+		},
+		{
+			"name": "User Profile",
+			"item": [
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Juan Pérez\",\n    \"email\": \"juan@ejemplo.com\",\n    \"phone\": \"+1234567890\",\n    \"birthDate\": \"1990-01-01\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile",
+							"host": ["{{base_url}}"],
+							"path": ["api", "profile"]
+						},
+						"description": "Actualizar perfil de usuario"
+					}
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/profile",
+							"host": ["{{base_url}}"],
+							"path": ["api", "profile"]
+						},
+						"description": "Obtener perfil de usuario"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "token",
+			"value": "tu_token_jwt_aqui"
+		}
+	]
+} 
