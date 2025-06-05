@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/Aliva-Project/backend-aliva#readme",
   "dependencies": {
+    "@nestjs/swagger": "^11.2.0",
     "@prisma/client": "^5.10.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -39,6 +40,8 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "pdf-parse": "^1.1.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "tesseract.js": "^5.0.0"
   },
   "devDependencies": {
@@ -50,6 +53,8 @@
     "@types/passport": "^1.0.0",
     "@types/passport-jwt": "^3.0.0",
     "@types/passport-local": "^1.0.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^3.0.0",
     "prisma": "^5.10.0",
     "ts-node": "^10.9.0",
