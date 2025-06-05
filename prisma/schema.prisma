@@ -1,0 +1,242 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// Modelo que representa a los usuarios de la plataforma de salud preventiva.
+/// Almacena información personal y de autenticación de las usuarias.
+model User {
+  id                    Int                    @id @default(autoincrement())
+  email                 String                 @unique
+  password              String
+  name                  String
+  birthDate             DateTime
+  location              String
+  role                  Role                   @default(USER)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  healthSurveyAnswers   HealthSurveyAnswer[]
+  medicalControls       MedicalControl[]
+  medicalResults        MedicalResult[]
+  contentViews          UserContentView[]
+  virtualAssistantMessages VirtualAssistantMessage[]
+  pointHistory          UserPointHistory[]
+  userRewards           UserReward[]
+}
+
+/// Modelo que almacena las preguntas del perfil de salud.
+/// Permite crear encuestas personalizadas con diferentes tipos de preguntas.
+model HealthSurveyQuestion {
+  id          Int                  @id @default(autoincrement())
+  question    String
+  type        QuestionType
+  options     Json?               // Para preguntas de opción múltiple
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  answers     HealthSurveyAnswer[]
+}
+
+/// Modelo que registra las respuestas de las usuarias a las preguntas de salud.
+/// Permite hacer seguimiento de las respuestas individuales y su evolución.
+model HealthSurveyAnswer {
+  id          Int                  @id @default(autoincrement())
+  userId      Int
+  questionId  Int
+  answer      String
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  user        User                @relation(fields: [userId], references: [id])
+  question    HealthSurveyQuestion @relation(fields: [questionId], references: [id])
+}
+
+/// Modelo que gestiona los controles médicos de las usuarias.
+/// Permite agendar, registrar y hacer seguimiento de consultas médicas.
+model MedicalControl {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  clinicId    Int
+  date        DateTime
+  type        String
+  status      ControlStatus
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id])
+  clinic      Clinic    @relation(fields: [clinicId], references: [id])
+}
+
+/// Modelo que almacena los resultados médicos de las usuarias.
+/// Gestiona documentos, imágenes y referencias de estudios médicos.
+model MedicalResult {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  type        String
+  url         String    // URL al archivo almacenado externamente
+  reference   String?   // Referencias externas
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+/// Modelo que organiza el contenido educativo en categorías.
+/// Permite una estructura jerárquica del contenido educativo.
+model EducationalCategory {
+  id          Int                  @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  contents    EducationalContent[]
+}
+
+/// Modelo que almacena el contenido educativo de la plataforma.
+/// Incluye diferentes tipos de contenido como artículos, videos y quizzes.
+model EducationalContent {
+  id          Int                  @id @default(autoincrement())
+  categoryId  Int
+  title       String
+  content     String
+  type        ContentType
+  url         String?              // URL opcional para contenido multimedia
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  category    EducationalCategory  @relation(fields: [categoryId], references: [id])
+  views       UserContentView[]
+}
+
+/// Modelo que registra el progreso de las usuarias en el contenido educativo.
+/// Permite hacer seguimiento del contenido completado por cada usuaria.
+model UserContentView {
+  id          Int                  @id @default(autoincrement())
+  userId      Int
+  contentId   Int
+  completed   Boolean             @default(false)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  user        User                @relation(fields: [userId], references: [id])
+  content     EducationalContent  @relation(fields: [contentId], references: [id])
+}
+
+/// Modelo que almacena el historial de conversaciones con el asistente virtual.
+/// Permite mantener un registro de las interacciones en texto y audio.
+model VirtualAssistantMessage {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  message     String
+  type        MessageType
+  url         String?   // URL opcional para mensajes de audio
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+/// Modelo que gestiona la información de los centros médicos.
+/// Permite categorizar y localizar clínicas y centros de salud.
+model Clinic {
+  id          Int              @id @default(autoincrement())
+  name        String
+  address     String
+  category    String
+  phone       String?
+  email       String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  controls    MedicalControl[]
+}
+
+/// Modelo que define las acciones que otorgan puntos en la gamificación.
+/// Establece el sistema de recompensas por actividades en la plataforma.
+model GamificationAction {
+  id          Int              @id @default(autoincrement())
+  name        String
+  description String
+  points      Int
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  pointHistory UserPointHistory[]
+}
+
+/// Modelo que registra el historial de puntos ganados por las usuarias.
+/// Mantiene un registro detallado de las acciones y puntos acumulados.
+model UserPointHistory {
+  id          Int              @id @default(autoincrement())
+  userId      Int
+  actionId    Int
+  points      Int
+  createdAt   DateTime        @default(now())
+  user        User            @relation(fields: [userId], references: [id])
+  action      GamificationAction @relation(fields: [actionId], references: [id])
+}
+
+/// Modelo que define el catálogo de recompensas disponibles.
+/// Gestiona las recompensas que pueden canjear las usuarias con sus puntos.
+model Reward {
+  id          Int              @id @default(autoincrement())
+  name        String
+  description String
+  pointsCost  Int
+  stock       Int?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  userRewards UserReward[]
+}
+
+/// Modelo que registra las recompensas canjeadas por las usuarias.
+/// Mantiene un historial de los canjes y su estado.
+model UserReward {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  rewardId    Int
+  redeemedAt  DateTime  @default(now())
+  status      RewardStatus
+  user        User      @relation(fields: [userId], references: [id])
+  reward      Reward    @relation(fields: [rewardId], references: [id])
+}
+
+/// Roles de usuario en la plataforma
+enum Role {
+  USER
+  ADMIN
+}
+
+/// Tipos de preguntas para las encuestas de salud
+enum QuestionType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  TEXT
+  SCALE
+}
+
+/// Estados posibles de un control médico
+enum ControlStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+/// Tipos de contenido educativo
+enum ContentType {
+  ARTICLE
+  VIDEO
+  AUDIO
+  QUIZ
+}
+
+/// Tipos de mensajes del asistente virtual
+enum MessageType {
+  TEXT
+  AUDIO
+}
+
+/// Estados posibles de una recompensa canjeada
+enum RewardStatus {
+  PENDING
+  REDEEMED
+  EXPIRED
+} 
