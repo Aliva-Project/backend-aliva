@@ -1,17 +1,40 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import path from 'path';
 
-const options = {
+export const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Aliva API Documentation',
+      title: 'API de Aliva',
       version: '1.0.0',
-      description: 'API documentation for Aliva backend',
+      description: 'API para el sistema de Aliva',
     },
     servers: [
       {
         url: 'http://localhost:3000',
-        description: 'Development server',
+        description: 'Servidor de desarrollo',
+      },
+    ],
+    tags: [
+      {
+        name: 'Autenticación',
+        description: 'Endpoints de autenticación',
+      },
+      {
+        name: 'Perfil (Admin)',
+        description: 'Endpoints para administradores de configuración de perfil',
+      },
+      {
+        name: 'Perfil (Usuario)',
+        description: 'Endpoints para usuarios de perfil',
+      },
+      {
+        name: 'Antecedentes Familiares (Admin)',
+        description: 'Endpoints para administradores de antecedentes familiares',
+      },
+      {
+        name: 'Antecedentes Familiares (Usuario)',
+        description: 'Endpoints para usuarios de antecedentes familiares',
       },
     ],
     components: {
@@ -27,7 +50,10 @@ const options = {
       bearerAuth: [],
     }],
   },
-  apis: ['./src/routes/*.ts'], // Path to the API routes
+  apis: [
+    path.join(__dirname, '../routes/*.ts'),
+    path.join(__dirname, '../docs/*.swagger.ts'),
+  ],
 };
 
-export const specs = swaggerJsdoc(options); 
+export const specs = swaggerJsdoc(swaggerOptions); 

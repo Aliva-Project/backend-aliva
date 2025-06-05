@@ -11,6 +11,8 @@ import { configurePassport } from './config/passport';
 import authRoutes from './routes/auth.routes';
 import profileConfigRoutes from './routes/profile-config.routes';
 import userProfileRoutes from './routes/user-profile.routes';
+import familyHistoryRoutes from './routes/family-history.routes';
+import familyHistoryConfigRoutes from './routes/family-history-config.routes';
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -34,6 +36,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/api/auth', authRoutes);
 app.use('/api/profile-config', profileConfigRoutes);
 app.use('/api/profile', userProfileRoutes);
+app.use('/api/family-history', familyHistoryRoutes);
+app.use('/api/family-history/config', familyHistoryConfigRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
