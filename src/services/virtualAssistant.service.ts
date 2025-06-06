@@ -23,7 +23,7 @@ export class VirtualAssistantService {
       const messageHistory = await prisma.virtualAssistantMessage.findMany({
         where: { userId },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 6,
         select: {
           message: true,
           sender: true,
