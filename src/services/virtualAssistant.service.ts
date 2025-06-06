@@ -12,11 +12,11 @@ export class VirtualAssistantService {
     try {
       // Obtener el prompt del sistema
       const systemPrompt = await prisma.systemPrompt.findFirst({
-        where: { isActive: true },
+        where: { name: config.virtualAssistant.contextName },
       });
 
       if (!systemPrompt) {
-        throw new Error('No hay un prompt del sistema activo');
+        throw new Error(`No hay un prompt del sistema activo con el nombre: ${config.virtualAssistant.contextName}`);
       }
 
       // Obtener el historial de mensajes
@@ -76,9 +76,105 @@ export class VirtualAssistantService {
 
       return {
         message: assistantResponse,
+        messageHistory,
       };
     } catch (error) {
       console.error('Error en el servicio del asistente virtual:', error);
+      throw error;
+    }
+  }
+
+  async getConversationHistory(userId: number, limit?: number) {
+    try {
+      const messages = await prisma.virtualAssistantMessage.findMany({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+        take: limit || 10,
+        select: {
+          id: true,
+          message: true,
+          sender: true,
+          type: true,
+          createdAt: true,
+        },
+      });
+
+      return messages.reverse();
+    } catch (error) {
+      console.error('Error al obtener historial de conversación:', error);
+      throw error;
+    }
+  }
+
+  async deleteConversationHistory(userId: number) {
+    try {
+      await prisma.virtualAssistantMessage.deleteMany({
+        where: { userId },
+      });
+    } catch (error) {
+      console.error('Error al eliminar historial de conversación:', error);
+      throw error;
+    }
+  }
+
+  async createSystemPrompt(content: string, isActive: boolean = false, name?: string) {
+    try {
+      // Si el nuevo prompt será activo, desactivar todos los demás
+      if (isActive) {
+        await prisma.systemPrompt.updateMany({
+          where: { isActive: true },
+          data: { isActive: false },
+        });
+      }
+
+      const prompt = await prisma.systemPrompt.create({
+        data: {
+          name: name || `Prompt ${new Date().toISOString()}`,
+          content,
+          isActive,
+        },
+      });
+
+      return prompt;
+    } catch (error) {
+      console.error('Error al crear prompt del sistema:', error);
+      throw error;
+    }
+  }
+
+  async updateSystemPrompt(id: number, content: string, isActive: boolean, name?: string) {
+    try {
+      // Si el prompt será activo, desactivar todos los demás
+      if (isActive) {
+        await prisma.systemPrompt.updateMany({
+          where: { isActive: true },
+          data: { isActive: false },
+        });
+      }
+
+      const prompt = await prisma.systemPrompt.update({
+        where: { id },
+        data: {
+          content,
+          isActive,
+          ...(name && { name }),
+        },
+      });
+
+      return prompt;
+    } catch (error) {
+      console.error('Error al actualizar prompt del sistema:', error);
+      throw error;
+    }
+  }
+
+  async deleteSystemPrompt(id: number) {
+    try {
+      await prisma.systemPrompt.delete({
+        where: { id },
+      });
+    } catch (error) {
+      console.error('Error al eliminar prompt del sistema:', error);
       throw error;
     }
   }
