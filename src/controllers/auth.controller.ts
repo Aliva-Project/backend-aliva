@@ -5,8 +5,21 @@ const authService = new AuthService();
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { email, password, name } = req.body;
-    const result = await authService.register(email, password, name);
+    const { email, password, name, birthDate, location } = req.body;
+    
+    if (!birthDate || !location) {
+      return res.status(400).json({ 
+        message: 'La fecha de nacimiento y la ubicación son requeridas' 
+      });
+    }
+
+    const result = await authService.register(
+      email, 
+      password, 
+      name, 
+      new Date(birthDate), 
+      location
+    );
     res.status(201).json(result);
   } catch (error) {
     if (error instanceof Error) {
