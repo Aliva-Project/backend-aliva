@@ -129,11 +129,22 @@ model UserContentView {
 model VirtualAssistantMessage {
   id          Int       @id @default(autoincrement())
   userId      Int
-  message     String
+  message     String    @db.Text
   type        MessageType
+  sender      MessageSender
   url         String?   // URL opcional para mensajes de audio
   createdAt   DateTime  @default(now())
   user        User      @relation(fields: [userId], references: [id])
+}
+
+/// Modelo que almacena los prompts del sistema para el asistente virtual
+model SystemPrompt {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  content     String    @db.Text
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
 }
 
 /// Modelo que gestiona la información de los centros médicos.
@@ -232,6 +243,12 @@ enum ContentType {
 enum MessageType {
   TEXT
   AUDIO
+}
+
+/// Origen del mensaje
+enum MessageSender {
+  USER
+  ASSISTANT
 }
 
 /// Estados posibles de una recompensa canjeada
