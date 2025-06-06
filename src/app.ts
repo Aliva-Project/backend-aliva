@@ -9,6 +9,7 @@ import swaggerJsdoc from 'swagger-jsdoc';
 // Importar rutas y configuraciones
 import authRoutes from './routes/auth.routes';
 import virtualAssistantRoutes from './routes/virtualAssistant.routes';
+import systemPromptRoutes from './routes/systemPrompt.routes';
 import { configurePassport } from './config/passport';
 
 // Configuración de variables de entorno
@@ -64,6 +65,7 @@ app.use(passport.initialize());
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/assistant', virtualAssistantRoutes);
+app.use('/api/system-prompts', systemPromptRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
