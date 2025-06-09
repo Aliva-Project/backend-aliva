@@ -29,6 +29,10 @@ model User {
   virtualAssistantMessages VirtualAssistantMessage[]
   pointHistory          UserPointHistory[]
   userRewards           UserReward[]
+  profile       Json?
+  familyHistoryAnswers FamilyHistoryAnswer[]
+  controlHistoryAnswers ControlHistoryAnswer[]
+  relevantHabitAnswers RelevantHabitAnswer[]  
 }
 
 /// Modelo que almacena las preguntas del perfil de salud.
@@ -109,6 +113,101 @@ model EducationalContent {
   updatedAt   DateTime            @updatedAt
   category    EducationalCategory  @relation(fields: [categoryId], references: [id])
   views       UserContentView[]
+}
+
+model ProfileConfig {
+  id            Int         @id @default(autoincrement())
+  fieldName     String      @unique
+  displayName   String
+  isRequired    Boolean     @default(false)
+  fieldType     FieldType
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model ProfileField {
+  id          Int      @id @default(autoincrement())
+  name        String
+  label       String
+  type        FieldType
+  required    Boolean  @default(false)
+  order       Int      @default(0)
+  options     Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FamilyHistoryQuestion {
+  id          Int      @id @default(autoincrement())
+  question    String
+  description String?
+  isRequired  Boolean  @default(false)
+  answerType  AnswerType
+  options     Json?    // Para preguntas de opción múltiple
+  allowMultiple Boolean @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  answers     FamilyHistoryAnswer[]
+}
+
+model FamilyHistoryAnswer {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  questionId  Int
+  answer      String
+  details     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+  question    FamilyHistoryQuestion @relation(fields: [questionId], references: [id])
+
+  @@unique([userId, questionId])
+}
+
+model ControlHistoryQuestion {
+  id          Int      @id @default(autoincrement())
+  question    String
+  description String?
+  isRequired  Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  answers     ControlHistoryAnswer[]
+}
+
+model ControlHistoryAnswer {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  questionId  Int
+  date        DateTime
+  details     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+  question    ControlHistoryQuestion @relation(fields: [questionId], references: [id])
+
+  @@unique([userId, questionId])
+}
+
+model RelevantHabitQuestion {
+  id          String               @id @default(uuid())
+  question    String
+  options     Json                 // Array de opciones predefinidas
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  answers     RelevantHabitAnswer[]
+}
+
+model RelevantHabitAnswer {
+  id          String               @id @default(uuid())
+  answer      String
+  questionId  String
+  userId      Int                  // Cambiado de String a Int para coincidir con el tipo de id en User
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  question    RelevantHabitQuestion @relation(fields: [questionId], references: [id])
+  user        User                 @relation(fields: [userId], references: [id])
 }
 
 /// Modelo que registra el progreso de las usuarias en el contenido educativo.
@@ -239,4 +338,21 @@ enum RewardStatus {
   PENDING
   REDEEMED
   EXPIRED
+}
+
+enum FieldType {
+  TEXT
+  EMAIL
+  PHONE
+  DATE
+  NUMBER
+  SELECT
+  MULTIPLE_CHOICE
+  BOOLEAN
+}
+
+enum AnswerType {
+  TEXT
+  SELECT
+  MULTIPLE_CHOICE
 } 
