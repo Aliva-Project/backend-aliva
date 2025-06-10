@@ -9,14 +9,20 @@ export class UserProfileService {
     phone?: string;
     birthDate?: Date;
   }) {
+    const { phone, ...restData } = data;
+    const profileData = phone ? { phone } : undefined;
+
     return prisma.user.update({
       where: { id: userId },
-      data,
+      data: {
+        ...restData,
+        profile: profileData
+      },
       select: {
         id: true,
         name: true,
         email: true,
-        phone: true,
+        profile: true,
         birthDate: true,
         role: true,
         createdAt: true,
@@ -32,7 +38,7 @@ export class UserProfileService {
         id: true,
         name: true,
         email: true,
-        phone: true,
+        profile: true,
         birthDate: true,
         role: true,
         createdAt: true,

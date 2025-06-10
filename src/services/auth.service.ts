@@ -78,7 +78,7 @@ export class AuthService {
 
   private generateToken(userId: number): string {
     return jwt.sign(
-      { id: parseInt(userId) },
+      { id: userId },
       process.env.JWT_SECRET || 'default_secret',
       { expiresIn: '1d' }
     );
