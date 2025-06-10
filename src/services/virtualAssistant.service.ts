@@ -10,6 +10,11 @@ const openai = new OpenAI({
 export class VirtualAssistantService {
   async processMessage(userId: number, message: string) {
     try {
+      // Validar que la API key esté configurada
+      if (!config.openai.apiKey) {
+        throw new Error('La API key de OpenAI no está configurada');
+      }
+
       // Obtener el prompt del sistema
       const systemPrompt = await prisma.systemPrompt.findFirst({
         where: { name: config.virtualAssistant.contextName },
@@ -40,47 +45,63 @@ export class VirtualAssistantService {
         { role: 'user', content: message },
       ];
 
-      // Obtener respuesta de OpenAI
-      const completion = await openai.chat.completions.create({
-        model: config.openai.model,
-        messages: messages as any,
-        temperature: 0.7,
-        max_tokens: 500,
-      });
+      try {
+        // Obtener respuesta de OpenAI
+        const completion = await openai.chat.completions.create({
+          model: config.openai.model,
+          messages: messages as any,
+          temperature: 0.7,
+          max_tokens: 500,
+        });
 
-      const assistantResponse = completion.choices[0].message.content;
+        const assistantResponse = completion.choices[0].message.content;
 
-      if (!assistantResponse) {
-        throw new Error('No se recibió respuesta del asistente');
-      }
+        if (!assistantResponse) {
+          throw new Error('No se recibió respuesta del asistente');
+        }
 
-      // Guardar mensaje del usuario
-      await prisma.virtualAssistantMessage.create({
-        data: {
-          userId,
-          message,
-          type: MessageType.TEXT,
-          sender: MessageSender.USER,
-        },
-      });
+        // Guardar mensaje del usuario
+        await prisma.virtualAssistantMessage.create({
+          data: {
+            userId,
+            message,
+            type: MessageType.TEXT,
+            sender: MessageSender.USER,
+          },
+        });
 
-      // Guardar respuesta del asistente
-      await prisma.virtualAssistantMessage.create({
-        data: {
-          userId,
+        // Guardar respuesta del asistente
+        await prisma.virtualAssistantMessage.create({
+          data: {
+            userId,
+            message: assistantResponse,
+            type: MessageType.TEXT,
+            sender: MessageSender.ASSISTANT,
+          },
+        });
+
+        return {
           message: assistantResponse,
-          type: MessageType.TEXT,
-          sender: MessageSender.ASSISTANT,
-        },
-      });
-
-      return {
-        message: assistantResponse,
-        messageHistory,
-      };
-    } catch (error) {
+          messageHistory,
+        };
+      } catch (openaiError: any) {
+        // Manejar errores específicos de OpenAI
+        if (openaiError.status === 401) {
+          throw new Error('Error de autenticación con OpenAI. Por favor, verifica la API key.');
+        } else if (openaiError.status === 429) {
+          throw new Error('Se ha excedido el límite de solicitudes a OpenAI. Por favor, intenta más tarde.');
+        } else {
+          throw new Error(`Error al comunicarse con OpenAI: ${openaiError.message}`);
+        }
+      }
+    } catch (error: any) {
       console.error('Error en el servicio del asistente virtual:', error);
-      throw error;
+      // Devolver un mensaje de error amigable
+      return {
+        message: `Lo siento, ha ocurrido un error: ${error.message}`,
+        error: true,
+        messageHistory: [],
+      };
     }
   }
 
