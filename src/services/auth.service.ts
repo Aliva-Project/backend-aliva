@@ -26,7 +26,7 @@ export class AuthService {
       }
     });
 
-    const token = this.generateToken(user.id.toString());
+    const token = this.generateToken(user.id);
 
     return {
       message: 'Usuario registrado exitosamente',
@@ -49,7 +49,7 @@ export class AuthService {
       throw new Error('Credenciales inválidas');
     }
 
-    const token = this.generateToken(user.id.toString());
+    const token = this.generateToken(user.id);
 
     return {
       message: 'Login exitoso',
@@ -57,9 +57,9 @@ export class AuthService {
     };
   }
 
-  async getProfile(userId: string) {
+  async getProfile(userId: number) {
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(userId) },
+      where: { id: userId },
       select: {
         id: true,
         email: true,
@@ -76,9 +76,9 @@ export class AuthService {
     return user;
   }
 
-  private generateToken(userId: string): string {
+  private generateToken(userId: number): string {
     return jwt.sign(
-      { id: parseInt(userId) },
+      { id: userId },
       process.env.JWT_SECRET || 'default_secret',
       { expiresIn: '1d' }
     );

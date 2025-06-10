@@ -39,6 +39,20 @@ npm run prisma:generate
 npm run prisma:migrate
 ```
 
+6. Ejecutar los seeders de la base de datos:
+```bash
+npm run prisma:seed
+```
+
+Este comando ejecutará todos los seeders definidos en la carpeta `prisma/seeders/`. Actualmente incluye:
+- `systemPromptSeeder.ts`: Datos iniciales para los prompts del sistema
+- `seed.ts`: Archivo principal que orquesta la ejecución de todos los seeders
+
+Para agregar nuevos seeders:
+1. Crear un nuevo archivo en `prisma/seeders/` (ej: `nuevoSeeder.ts`)
+2. Implementar la función de seed
+3. Importar y agregar la función en `seed.ts`
+
 ## Desarrollo
 
 Para ejecutar el servidor en modo desarrollo:
@@ -228,6 +242,12 @@ npm run prisma:migrate:status
 
 # Revertir última migración (solo desarrollo)
 npm run prisma:migrate:reset
+
+# Ejecutar seeders
+npm run prisma:seed
+
+# Ejecutar seeders y resetear la base de datos (desarrollo)
+npm run prisma:migrate:reset && npm run prisma:seed
 ```
 
 ### Buenas Prácticas

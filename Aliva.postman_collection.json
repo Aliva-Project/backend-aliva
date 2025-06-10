@@ -1,0 +1,712 @@
+{
+	"info": {
+		"_postman_id": "aliva-collection",
+		"name": "Aliva API",
+		"description": "Colección de endpoints para la API de Aliva",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@aliva.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Registro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Usuario Nuevo\",\n    \"email\": \"usuario@aliva.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Perfil",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "profile"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Perfil (Admin)",
+			"item": [
+				{
+					"name": "Crear Configuración de Campo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fieldName\": \"telefono\",\n    \"fieldType\": \"TEXT\",\n    \"isRequired\": true,\n    \"options\": []\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/profile-config",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "profile-config"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Todas las Configuraciones",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile-config",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "profile-config"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Configuración por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile-config/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "profile-config", "1"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar Configuración",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fieldName\": \"telefono\",\n    \"fieldType\": \"TEXT\",\n    \"isRequired\": false,\n    \"options\": []\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/profile-config/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "profile-config", "1"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar Configuración",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile-config/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "profile-config", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Perfil (Usuario)",
+			"item": [
+				{
+					"name": "Obtener Perfil",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "profile"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar Perfil",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"telefono\": \"123456789\",\n    \"direccion\": \"Calle Principal 123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "profile"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Antecedentes Familiares (Admin)",
+			"item": [
+				{
+					"name": "Crear Pregunta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"¿Tiene antecedentes de diabetes en la familia?\",\n    \"description\": \"Incluye padres, hermanos y abuelos\",\n    \"isRequired\": true,\n    \"answerType\": \"TEXT\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/config/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "config", "questions"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar Pregunta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"¿Tiene antecedentes de diabetes en la familia?\",\n    \"description\": \"Incluye padres, hermanos, abuelos y tíos\",\n    \"isRequired\": true,\n    \"answerType\": \"TEXT\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/config/questions/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "config", "questions", "1"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar Pregunta",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/config/questions/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "config", "questions", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Antecedentes Familiares (Usuario)",
+			"item": [
+				{
+					"name": "Obtener Todas las Preguntas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "questions"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Pregunta por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/questions/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "questions", "1"]
+						}
+					}
+				},
+				{
+					"name": "Enviar Respuesta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"answer\": true,\n    \"details\": \"Mi padre tiene diabetes tipo 2\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/questions/1/answers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "questions", "1", "answers"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar Respuesta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"answer\": true,\n    \"details\": \"Mi padre y mi abuelo tienen diabetes tipo 2\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/answers/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "answers", "1"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Todas las Respuestas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/answers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "answers"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Respuesta por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/answers/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "answers", "1"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar Respuesta",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/family-history/answers/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "family-history", "answers", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Historial de Controles",
+			"item": [
+				{
+					"name": "Crear Pregunta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"¿Cuándo fue tu último PAP?\",\n    \"description\": \"Fecha del último Papanicolaou\",\n    \"isRequired\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/config/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "config", "questions"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar Pregunta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"¿Cuándo fue tu último PAP?\",\n    \"description\": \"Fecha del último Papanicolaou\",\n    \"isRequired\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/config/questions/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "config", "questions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Eliminar Pregunta",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/config/questions/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "config", "questions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Obtener Todas las Preguntas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/questions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "questions"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Pregunta por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/questions/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "questions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Enviar Respuesta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2024-03-15T00:00:00.000Z\",\n    \"details\": \"Resultado normal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/questions/:questionId/answers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "questions", ":questionId", "answers"],
+							"variable": [
+								{
+									"key": "questionId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Actualizar Respuesta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2024-03-15T00:00:00.000Z\",\n    \"details\": \"Resultado normal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/answers/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "answers", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Obtener Todas las Respuestas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/answers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "answers"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Respuesta por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/answers/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "answers", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Eliminar Respuesta",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/control-history/answers/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "control-history", "answers", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "token",
+			"value": "tu-token-jwt-aqui"
+		}
+	]
+} 
