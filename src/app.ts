@@ -17,6 +17,8 @@ import familyHistoryConfigRoutes from './routes/family-history-config.routes';
 import controlHistoryRoutes from './routes/control-history.routes';
 import relevantHabitRoutes from './routes/relevant-habit.routes';
 import virtualAssistantRoutes from './routes/virtualAssistant.routes';
+import systemPromptRoutes from './routes/systemPrompt.routes';
+import { configurePassport } from './config/passport';
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -77,6 +79,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/assistant', virtualAssistantRoutes);
+app.use('/api/system-prompts', systemPromptRoutes);
 app.use('/api/profile-config', profileConfigRoutes);
 app.use('/api/profile', userProfileRoutes);
 app.use('/api/family-history', familyHistoryRoutes);
