@@ -1,4 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import { authSchemas } from '../schemas/auth.schema';
 
 const swaggerOptions = {
   definition: {
@@ -32,7 +33,8 @@ const swaggerOptions = {
               description: 'Mensaje de error'
             }
           }
-        }
+        },
+        ...authSchemas
       }
     },
     security: [{
@@ -40,8 +42,7 @@ const swaggerOptions = {
     }]
   },
   apis: [
-    './src/routes/*.ts',
-    './src/docs/*.swagger.ts'
+    './src/routes/*.ts'
   ],
 };
 
