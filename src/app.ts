@@ -4,9 +4,8 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
-import { specs } from './config/swagger';
+import { swaggerSpec } from './config/swagger';
 import { configurePassport } from './config/passport';
-import swaggerJsdoc from 'swagger-jsdoc';
 
 // Importar rutas y configuraciones
 import authRoutes from './routes/auth.routes';
@@ -18,7 +17,6 @@ import controlHistoryRoutes from './routes/control-history.routes';
 import relevantHabitRoutes from './routes/relevant-habit.routes';
 import virtualAssistantRoutes from './routes/virtualAssistant.routes';
 import systemPromptRoutes from './routes/systemPrompt.routes';
-import { configurePassport } from './config/passport';
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -28,41 +26,6 @@ const app = express();
 // Configuración de Passport
 configurePassport(passport);
 
-// Configuración de Swagger
-const swaggerOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'API de Aliva',
-      version: '1.0.0',
-      description: 'Documentación de la API de Aliva',
-    },
-    servers: [
-      {
-        url: `http://localhost:${process.env.PORT || 3000}`,
-        description: 'Servidor de desarrollo',
-      },
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-          description: 'Ingresa el token JWT en el formato: Bearer <token>'
-        }
-      }
-    },
-    security: [{
-      bearerAuth: []
-    }]
-  },
-  apis: ['./src/routes/*.ts'], // archivos que contienen las anotaciones de Swagger
-};
-
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 // Middleware
 app.use(cors());
 app.use(helmet());
@@ -71,10 +34,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Inicializar Passport
 app.use(passport.initialize());
-configurePassport(passport);
 
 // Swagger Documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rutas
 app.use('/api/auth', authRoutes);
