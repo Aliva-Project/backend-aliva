@@ -8,9 +8,16 @@ const router = Router();
 
 /**
  * @swagger
+ * tags:
+ *   - name: Autenticación
+ *     description: Endpoints de autenticación y registro
+ */
+
+/**
+ * @swagger
  * /api/auth/register:
  *   post:
- *     summary: Registra un nuevo usuario
+ *     summary: Registrar nuevo usuario
  *     tags: [Autenticación]
  *     security: [] # No requiere autenticación
  *     requestBody:
@@ -18,66 +25,26 @@ const router = Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *               - name
- *               - birthDate
- *               - location
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 description: Correo electrónico del usuario
- *               password:
- *                 type: string
- *                 minLength: 6
- *                 description: Contraseña del usuario (mínimo 6 caracteres)
- *               name:
- *                 type: string
- *                 description: Nombre completo del usuario
- *               birthDate:
- *                 type: string
- *                 format: date
- *                 description: Fecha de nacimiento en formato ISO 8601 (YYYY-MM-DD)
- *               location:
- *                 type: string
- *                 description: Ubicación del usuario
+ *             $ref: '#/components/schemas/RegisterRequest'
  *     responses:
  *       201:
  *         description: Usuario registrado exitosamente
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Usuario registrado exitosamente
- *                 token:
- *                   type: string
- *                   description: Token JWT para autenticación
+ *               $ref: '#/components/schemas/AuthResponse'
  *       400:
- *         description: Error en los datos proporcionados
+ *         description: Datos inválidos o email ya registrado
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: La fecha de nacimiento y la ubicación son requeridas
+ *               $ref: '#/components/schemas/Error'
  *       500:
  *         description: Error interno del servidor
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al registrar usuario
+ *               $ref: '#/components/schemas/Error'
  */
 router.post(
   '/register',
@@ -102,7 +69,7 @@ router.post(
  * @swagger
  * /api/auth/login:
  *   post:
- *     summary: Inicia sesión de un usuario
+ *     summary: Iniciar sesión
  *     tags: [Autenticación]
  *     security: [] # No requiere autenticación
  *     requestBody:
@@ -110,52 +77,26 @@ router.post(
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 description: Correo electrónico del usuario
- *               password:
- *                 type: string
- *                 description: Contraseña del usuario
+ *             $ref: '#/components/schemas/LoginRequest'
  *     responses:
  *       200:
  *         description: Login exitoso
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Login exitoso
- *                 token:
- *                   type: string
- *                   description: Token JWT para autenticación
+ *               $ref: '#/components/schemas/AuthResponse'
  *       400:
  *         description: Credenciales inválidas
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Credenciales inválidas
+ *               $ref: '#/components/schemas/Error'
  *       500:
  *         description: Error interno del servidor
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al iniciar sesión
+ *               $ref: '#/components/schemas/Error'
  */
 router.post(
   '/login',
@@ -171,55 +112,29 @@ router.post(
  * @swagger
  * /api/auth/profile:
  *   get:
- *     summary: Obtiene el perfil del usuario autenticado
+ *     summary: Obtener perfil del usuario autenticado
  *     tags: [Autenticación]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Perfil del usuario
+ *         description: Perfil del usuario obtenido exitosamente
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   description: ID del usuario
- *                 email:
- *                   type: string
- *                   format: email
- *                   description: Correo electrónico del usuario
- *                 name:
- *                   type: string
- *                   description: Nombre del usuario
- *                 role:
- *                   type: string
- *                   description: Rol del usuario
- *                 createdAt:
- *                   type: string
- *                   format: date-time
- *                   description: Fecha de creación de la cuenta
+ *               $ref: '#/components/schemas/AuthResponse'
  *       401:
  *         description: No autorizado
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: No autorizado
+ *               $ref: '#/components/schemas/Error'
  *       404:
  *         description: Usuario no encontrado
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Usuario no encontrado
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/profile', authenticate, getProfile);
 

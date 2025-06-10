@@ -1,0 +1,584 @@
+{
+  "info": {
+    "name": "Aliva API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Registro",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"newuser@example.com\",\n    \"password\": \"password123\",\n    \"name\": \"New User\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Perfil de Usuario",
+      "item": [
+        {
+          "name": "Obtener Perfil",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Perfil",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "profile"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Name\",\n    \"email\": \"updated@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Configuración de Perfil",
+      "item": [
+        {
+          "name": "Crear Configuración (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/profile-config",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "profile-config"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Configuración Básica\",\n    \"description\": \"Campos básicos del perfil\",\n    \"fields\": [\"nombre\", \"edad\", \"género\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Obtener Configuraciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/profile-config",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "profile-config"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Antecedentes Familiares",
+      "item": [
+        {
+          "name": "Crear Pregunta (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/family-history/config/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "family-history", "config", "questions"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"question\": \"¿Tiene antecedentes de diabetes en la familia?\",\n    \"options\": [\"Sí\", \"No\", \"No sé\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Obtener Preguntas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/family-history/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "family-history", "questions"]
+            }
+          }
+        },
+        {
+          "name": "Crear Respuesta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/family-history/questions/:questionId/answers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "family-history", "questions", ":questionId", "answers"],
+              "variable": [
+                {
+                  "key": "questionId",
+                  "value": "question_id_here"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"answer\": \"Sí\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Historial de Controles",
+      "item": [
+        {
+          "name": "Crear Pregunta (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/control-history/config/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "control-history", "config", "questions"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"question\": \"Último PAP\",\n    \"options\": [\"Menos de 1 año\", \"1-2 años\", \"Más de 2 años\", \"Nunca\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Obtener Preguntas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/control-history/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "control-history", "questions"]
+            }
+          }
+        },
+        {
+          "name": "Crear Respuesta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/control-history/questions/:questionId/answers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "control-history", "questions", ":questionId", "answers"],
+              "variable": [
+                {
+                  "key": "questionId",
+                  "value": "question_id_here"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"answer\": \"Menos de 1 año\",\n    \"date\": \"2024-03-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hábitos Relevantes",
+      "item": [
+        {
+          "name": "Crear Pregunta (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/config/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "config", "questions"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"question\": \"¿Fuma?\",\n    \"options\": [\"Sí\", \"No\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Actualizar Pregunta (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/config/questions/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "config", "questions", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "question_id_here"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"question\": \"¿Fuma actualmente?\",\n    \"options\": [\"Sí\", \"No\", \"Ocasionalmente\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Eliminar Pregunta (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/config/questions/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "config", "questions", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "question_id_here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Todas las Preguntas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "questions"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Pregunta por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/questions/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "questions", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "question_id_here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear Respuesta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/questions/:questionId/answers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "questions", ":questionId", "answers"],
+              "variable": [
+                {
+                  "key": "questionId",
+                  "value": "question_id_here"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"answer\": \"No\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Actualizar Respuesta",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/answers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "answers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "answer_id_here"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"answer\": \"Sí\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Eliminar Respuesta",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/answers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "answers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "answer_id_here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Todas las Respuestas del Usuario",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/answers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "answers"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Respuesta por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/relevant-habit/answers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "relevant-habit", "answers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "answer_id_here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+} 
