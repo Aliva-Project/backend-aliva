@@ -20,7 +20,7 @@ export class UserProfileService {
       },
       select: {
         id: true,
-        name: true,
+        username: true,
         email: true,
         profile: true,
         birthDate: true,
@@ -36,7 +36,7 @@ export class UserProfileService {
       where: { id: userId },
       select: {
         id: true,
-        name: true,
+        username: true,
         email: true,
         profile: true,
         birthDate: true,

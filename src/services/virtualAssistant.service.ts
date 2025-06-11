@@ -7,8 +7,28 @@ const openai = new OpenAI({
   apiKey: config.openai.apiKey,
 });
 
+interface Message {
+  id?: number;
+  message: string;
+  sender: MessageSender;
+  type: MessageType;
+  createdAt?: Date;
+}
+
+interface AssistantResponse {
+  success: boolean;
+  data?: {
+    message: string;
+    messageHistory: Message[];
+  };
+  error?: {
+    message: string;
+    code?: string;
+  };
+}
+
 export class VirtualAssistantService {
-  async processMessage(userId: number, message: string) {
+  async processMessage(userId: number, message: string): Promise<AssistantResponse> {
     try {
       // Validar que la API key esté configurada
       if (!config.openai.apiKey) {
@@ -30,8 +50,11 @@ export class VirtualAssistantService {
         orderBy: { createdAt: 'desc' },
         take: 6,
         select: {
+          id: true,
           message: true,
           sender: true,
+          type: true,
+          createdAt: true,
         },
       });
 
@@ -61,7 +84,7 @@ export class VirtualAssistantService {
         }
 
         // Guardar mensaje del usuario
-        await prisma.virtualAssistantMessage.create({
+        const userMessage = await prisma.virtualAssistantMessage.create({
           data: {
             userId,
             message,
@@ -71,7 +94,7 @@ export class VirtualAssistantService {
         });
 
         // Guardar respuesta del asistente
-        await prisma.virtualAssistantMessage.create({
+        const assistantMessage = await prisma.virtualAssistantMessage.create({
           data: {
             userId,
             message: assistantResponse,
@@ -81,8 +104,11 @@ export class VirtualAssistantService {
         });
 
         return {
-          message: assistantResponse,
-          messageHistory,
+          success: true,
+          data: {
+            message: assistantResponse,
+            messageHistory: [...messageHistory, userMessage, assistantMessage].reverse(),
+          },
         };
       } catch (openaiError: any) {
         // Manejar errores específicos de OpenAI
@@ -96,11 +122,12 @@ export class VirtualAssistantService {
       }
     } catch (error: any) {
       console.error('Error en el servicio del asistente virtual:', error);
-      // Devolver un mensaje de error amigable
       return {
-        message: `Lo siento, ha ocurrido un error: ${error.message}`,
-        error: true,
-        messageHistory: [],
+        success: false,
+        error: {
+          message: error.message,
+          code: error.code,
+        },
       };
     }
   }

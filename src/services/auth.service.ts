@@ -4,25 +4,44 @@ import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 
+interface RegisterData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  documentNumber: string;
+  username?: string;
+  birthDate: Date;
+  location: string;
+}
+
 export class AuthService {
-  async register(email: string, password: string, name: string, birthDate: Date, location: string) {
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
+  async register(data: RegisterData) {
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: data.email },
+          { documentNumber: data.documentNumber }
+        ]
+      }
     });
 
     if (existingUser) {
-      throw new Error('El usuario ya existe');
+      throw new Error('El email o número de documento ya está registrado');
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
 
     const user = await prisma.user.create({
       data: {
-        email,
+        email: data.email,
         password: hashedPassword,
-        name,
-        birthDate,
-        location
+        firstName: data.firstName,
+        lastName: data.lastName,
+        documentNumber: data.documentNumber,
+        username: data.username,
+        birthDate: data.birthDate,
+        location: data.location
       }
     });
 
@@ -63,7 +82,10 @@ export class AuthService {
       select: {
         id: true,
         email: true,
-        name: true,
+        firstName: true,
+        lastName: true,
+        documentNumber: true,
+        username: true,
         role: true,
         createdAt: true
       }
