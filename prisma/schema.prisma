@@ -16,7 +16,10 @@ model User {
   id                    Int                    @id @default(autoincrement())
   email                 String                 @unique
   password              String
-  name                  String
+  firstName             String                 
+  lastName              String                 
+  documentNumber        String                 @unique 
+  username              String?                
   birthDate             DateTime
   location              String
   role                  Role                   @default(USER)

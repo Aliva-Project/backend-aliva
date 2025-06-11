@@ -17,6 +17,7 @@ import controlHistoryRoutes from './routes/control-history.routes';
 import relevantHabitRoutes from './routes/relevant-habit.routes';
 import virtualAssistantRoutes from './routes/virtualAssistant.routes';
 import systemPromptRoutes from './routes/systemPrompt.routes';
+import userRoutes from './routes/user.routes';
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -48,6 +49,7 @@ app.use('/api/family-history', familyHistoryRoutes);
 app.use('/api/family-history/config', familyHistoryConfigRoutes);
 app.use('/api/control-history', controlHistoryRoutes);
 app.use('/api/relevant-habit', relevantHabitRoutes);
+app.use('/api/users', userRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
