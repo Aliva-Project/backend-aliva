@@ -266,3 +266,4 @@ npm run prisma:migrate:reset && npm run prisma:seed
    - Mantener actualizada la documentación de las entidades
    - Documentar los cambios en el CHANGELOG
    - Comunicar los cambios al equipo
+   
